@@ -1,0 +1,1840 @@
+@ -176,6 +176,20 @@
+
+			border-radius: 25px;
+		}
+		.PopupWindow {
+			-webkit-transition-duration: 0.4s;
+			transition-duration: 0.4s;
+			text-align: center;
+			color: #000000;
+			margin: 5px;
+			padding: 5px;
+			position:absolute;
+			z-index: 1;
+			background: aliceblue;
+			border-radius: 15px;
+			box-shadow: 0 0 10px #d5d5d5;
+			font-size: 10px;
+		}
+		/* 按钮 */
+		 .button_fail {
+			 font-size: x-small;
+@ -531,6 +545,7 @@
+		}
+
+		//文本档案记录
+		var li_num=0;
+		function writeLogOl(){
+			var logStr = '·';
+			for (var i = 0; i < arguments.length; i++) {
+@ -540,6 +555,14 @@
+			var logOl=document.getElementById("logol");
+			var li=document.createElement("li");
+			li.innerHTML=logStr;
+			li_num++;
+			li.id="logol1"+li_num;
+			if (li_num>50){
+				li_id=li_num-50;
+				var kill1_id = "logol1" + li_id;
+				var obj=document.getElementById(kill1_id);
+				obj.remove();
+			}
+			logOl.appendChild(li);
+			//获取log栏id，滚动条始终在最下
+			var div = document.getElementById('logol');
+@ -547,6 +570,7 @@
+		}
+
+		//文本档案记录
+		var li2_num=0;
+		function writeLogOl02(arguments,color){
+			var logStr = '·';
+			for (var i = 0; i < arguments.length; i++) {
+@ -563,6 +587,16 @@
+
+			li.innerHTML=logStr;
+			li.className="hideSlow"
+
+			li2_num++;
+			li.id="logol2"+li2_num;
+			if (li2_num>20){
+				li2_id=li2_num-20;
+				var kill2_id = "logol2" + li2_id;
+				var obj=document.getElementById(kill2_id);
+				obj.remove();
+			}
+
+			logOl.appendChild(li);
+
+			//获取log栏id，滚动条始终在最下
+@ -646,7 +680,7 @@
+
+		</div>
+
+		<HR style="FILTER:alpha(opacity=100,finishopacity=0,style=1)" width="100%"color=#66ccff SIZE=10>
+		<HR width="100%"color=#66ccff SIZE=10>
+
+		<script type="text/javascript"> //标记以下代码为javascript
+
+@ -677,7 +711,7 @@
+
+		var maoqiu_time=500;	//maoqiu的进入值
+		var maoqiu_health_fix=400; //maoqiu固定起始血量
+		var Version_number="版本号 v1.0"
+
+		var maoqiu_attach_fix=10;
+		var maoqiu_defend_fix=10;
+		var maoqiu_speed_fix=10;
+@ -693,6 +727,9 @@
+		var space_metal_total=0;
+
+		var meiqiu_data={meiqiu_name:"煤球",meiqiu_health:100, meiqiu_attach:0, meiqiu_defend:0, meiqiu_speed:0, meiqiu_crit:0}
+		var maoqiudata={name:"毛球",health:500,health_total:500,
+            attach:0,defend:0,
+            speed:0,crit:0}
+
+		var PR_meiqiu=0.99; //煤球的自动出现概率
+		var meiqiu_time=1000; //自动煤球的起始时间
+@ -710,8 +747,6 @@
+		var equip_names=["战机","飞盘","飞剑","战甲","浮游炮","舰娘","飞龙","徙星鸟"];
+
+
+		var update_note="更新说明：增加了转生系统，通过”飞向深空“按键进行转生，每50级获得1个超动子，超动子可以提升初始的升级点、采集速度等" ;
+
+		 //初始化
+ 		function csh_(){
+ 			if(typeof(localStorage.ship_name) == "undefined") { localStorage.ship_name=ship_name;  }//当前船名
+@ -728,6 +763,7 @@
+			if(typeof(localStorage.used_xinglan_crystal) == "undefined") { localStorage.used_xinglan_crystal=0; } //使用的星岚结晶
+
+			if(typeof(localStorage.game_space_choose) == "undefined") { localStorage.game_space_choose=0; }//当前宇宙阶段
+			if(typeof(localStorage.damaoxian) == "undefined") { localStorage.damaoxian=0; }//当前大冒险开启状态
+
+			if(typeof(localStorage.dayboss_victory) == "undefined") { localStorage.dayboss_victory=dayboss_victory; }
+
+@ -766,6 +802,7 @@
+			if(typeof(localStorage.engine_name) == "undefined") { localStorage.engine_name="仓鼠轮"; }
+			if(typeof(localStorage.xx_engines) == "undefined") { localStorage.xx_engines=0; }
+			//装备卡
+			if(typeof(localStorage.equip1_name) == "undefined") { localStorage.equip1_name="原始护卫"; }
+			if(typeof(localStorage.equip1_type) == "undefined") { localStorage.equip1_type=0; }
+			if(typeof(localStorage.equip1_level) == "undefined") { localStorage.equip1_level=0; }
+			if(typeof(localStorage.equip1_att) == "undefined") { localStorage.equip1_att=0; }
+@ -773,6 +810,7 @@
+			if(typeof(localStorage.equip1_speed) == "undefined") { localStorage.equip1_speed=0; }
+			if(typeof(localStorage.equip1_crit) == "undefined") { localStorage.equip1_crit=0; }
+
+			if(typeof(localStorage.equip2_name) == "undefined") { localStorage.equip2_name="原始护卫"; }
+			if(typeof(localStorage.equip2_type) == "undefined") { localStorage.equip2_type=0; }
+			if(typeof(localStorage.equip2_level) == "undefined") { localStorage.equip2_level=0; }
+			if(typeof(localStorage.equip2_att) == "undefined") { localStorage.equip2_att=0; }
+@ -781,24 +819,29 @@
+			if(typeof(localStorage.equip2_crit) == "undefined") { localStorage.equip2_crit=0; }
+
+			if(typeof(localStorage.tongxunzhan) == "undefined") { localStorage.tongxunzhan=0; }//通讯站
+			if(typeof(localStorage.Upcore_refine_task) == "undefined") { localStorage.Upcore_refine_task=0; }//核心提炼站任务
+			if(typeof(localStorage.task_maoqiu) == "undefined") { localStorage.task_maoqiu=0; }//核心提炼站任务
+
+			//彩蛋人物
+			if(typeof(localStorage.xuemao) == "undefined") { localStorage.xuemao=0; }//雪喵
+			if(typeof(localStorage.xiaoxiao) == "undefined") { localStorage.xiaoxiao=0; }	//筱皛
+
+			if(typeof(localStorage.yumao) == "undefined") { localStorage.yumao=0; }//羽毛
+			if(typeof(localStorage.changming) == "undefined") { localStorage.changming=0; }//长萌
+			if(typeof(localStorage.xx_gundams) == "undefined") { localStorage.xx_gundams=0; }//高达
+			if(typeof(localStorage.daoxue) == "undefined") { localStorage.daoxue=0; }		//道雪
+			if(typeof(localStorage.xiaoxiao) == "undefined") { localStorage.xiaoxiao=0; }	//筱皛
+			if(typeof(localStorage.lingyu) == "undefined") { localStorage.lingyu=0; }//泠鱼
+			if(typeof(localStorage.fengshi) == "undefined") { localStorage.fengshi=0; }		//风逝
+			if(typeof(localStorage.huoya) == "undefined") { localStorage.huoya=0; }	//霍娅
+			if(typeof(localStorage.gugu) == "undefined") { localStorage.gugu=0; }	//咕咕
+			if(typeof(localStorage.youzi) == "undefined") { localStorage.youzi=0; }	//柚子
+			if(typeof(localStorage.changxi) == "undefined") { localStorage.changxi=0; }	//常曦
+			if(typeof(localStorage.hexian) == "undefined") { localStorage.hexian=0; }	//和弦
+			if(typeof(localStorage.lvling) == "undefined") { localStorage.lvling=0; }	//律灵
+			if(typeof(localStorage.xinghuan) == "undefined") { localStorage.xinghuan=0; }	//星幻
+
+			//战斗员
+			if(typeof(localStorage.dis) == "undefined") { localStorage.dis=0; }	//dis
+
+			if(typeof(localStorage.xx_gundams) == "undefined") { localStorage.xx_gundams=0; }//高达
+			if(typeof(localStorage.xuemao) == "undefined") { localStorage.xuemao=0; }//雪喵
+			if(typeof(localStorage.gugu) == "undefined") { localStorage.gugu=0; }	//咕咕
+			if(typeof(localStorage.daoxue) == "undefined") { localStorage.daoxue=0; }		//道雪
+
+			//游戏记录
+			if(typeof(localStorage.Defeated) == "undefined") { localStorage.Defeated=0; }//丢人次数
+@ -828,6 +871,7 @@
+			space_refine_station=parseFloat(localStorage.space_refine_station);
+			booty_coal_total=parseFloat(localStorage.booty_coal_total);
+
+			damaoxian=parseFloat(localStorage.damaoxian);
+			dayboss_victory=parseFloat(localStorage.dayboss_victory);
+
+			//毛球的相关属性
+@ -876,9 +920,14 @@
+			changxi=parseFloat(localStorage.changxi);
+			hexian=parseFloat(localStorage.hexian);
+			dis=parseFloat(localStorage.dis);
+			lvling=parseFloat(localStorage.lvling);
+			xinghuan=parseFloat(localStorage.xinghuan);
+			lingyu=parseFloat(localStorage.lingyu);
+
+			//任务系统
+			tongxunzhan=parseFloat(localStorage.tongxunzhan);
+			tongxunzhan=parseFloat(localStorage.tongxunzhan);//通讯站
+			Upcore_refine_task=parseFloat(localStorage.Upcore_refine_task);//核心提炼站
+			task_maoqiu=parseFloat(localStorage.task_maoqiu);//任务用毛球记录
+
+			//游戏记录更新
+			Defeated = parseFloat(localStorage.Defeated);
+@ -901,15 +950,15 @@
+			button_check(); //检测按键
+			equipment_fresh(); //检测装备显示
+			Meiqiudisplay(meiqiu_data.meiqiu_name,meiqiu_data.meiqiu_attach,meiqiu_data.meiqiu_defend,meiqiu_data.meiqiu_speed,meiqiu_data.meiqiu_crit);
+
+			Maoqiudisplay(maoqiu_name,maoqiu_attach,maoqiu_defend,maoqiu_speed,maoqiu_crit);
+ 		}
+
+		// 更新数值显示
+		function fresh_text(){
+			localStorage.Lv=Lv;
+			friend_att = 1.75*Lv;
+			friend_speed = 1.75*Lv;
+			friend_crit = 0.5*Lv;
+			friend_speed = 2*Lv;
+			friend_crit = 50;
+
+			localStorage.Upcore=Upcore;
+			localStorage.coal=coal.toFixed(0);
+@ -927,7 +976,7 @@
+
+			localStorage.maoqiu_name=maoqiu_name;
+			localStorage.maoqiu_flag=maoqiu_flag;
+			localStorage.maoqiu_health=maoqiu_health;
+			localStorage.maoqiu_health=maoqiu_health;//血量
+			localStorage.maoqiu_attach=maoqiu_attach;
+			localStorage.maoqiu_defend=maoqiu_defend;
+			localStorage.maoqiu_speed=maoqiu_speed;
+@ -935,7 +984,7 @@
+			//小怪
+			localStorage.meiqiu_name=meiqiu_data.meiqiu_name;
+			localStorage.meiqiu_flag=meiqiu_flag;
+			localStorage.meiqiu_health=meiqiu_data.meiqiu_health;
+			localStorage.meiqiu_health=meiqiu_data.meiqiu_health;//血量
+			localStorage.meiqiu_attach=meiqiu_data.meiqiu_attach;
+			localStorage.meiqiu_defend=meiqiu_data.meiqiu_defend;
+			localStorage.meiqiu_speed=meiqiu_data.meiqiu_speed;
+@ -947,7 +996,7 @@
+			localStorage.shield_name=shield_name;
+			localStorage.engine_name=engine_name;
+
+			localStorage.xx_health=xx_health;
+			localStorage.xx_health=xx_health;//血量
+			localStorage.xx_guns=xx_guns;
+			localStorage.xx_shields=xx_shields;
+			localStorage.xx_engines=xx_engines;
+@ -977,7 +1026,7 @@
+			// document.form1.coal_txt.value = coal;
+			// document.form1.power_txt.value = Lv;
+			document.getElementById("power_txt").innerHTML = "等级:"+ Lv; 	//更新文本框中的飞船能量显示
+			document.getElementById("Upcore_txt").innerHTML = num_change(Upcore); //更新星空结晶数量显示
+			document.getElementById("Upcore_txt").innerHTML = num_change(Upcore)+"/"+(Lv*2); //更新星空结晶数量显示
+			document.getElementById("skillpoint").innerHTML= "当前的升级点:"+skillpoint;
+			document.getElementById("coal_txt").innerHTML =  num_change(coal.toFixed(0)); 	//更新文本框中的岚星晶矿数量显示
+			document.getElementById("Gain_station").innerHTML = "采集站:"+ gain_station; //更新采集站数量显示
+@ -986,12 +1035,39 @@
+			document.getElementById("Spacegainstation_txt").innerHTML = "星空采集站:"+ space_gain_station; //更新星空采集站数量显示
+			document.getElementById("Spacerefinestation_txt").innerHTML = "星空精炼站:"+ space_refine_station; //更新星空经历站数量显示
+
+
+			maoqiu_health_rato=maoqiu_health/maoqiudata.health_total*100
+			if(maoqiu_health_rato>60){
+					document.getElementById("Maoqiu_health").style.borderColor="#adeeaf";	//更新血条中的毛球的血量颜色
+				}else if(maoqiu_health_rato>20){
+					document.getElementById("Maoqiu_health").style.borderColor="#f5cc43";	//更新血条中的毛球的血量颜色
+				}else if(20>=maoqiu_health_rato){
+					document.getElementById("Maoqiu_health").style.borderColor="#ff7474";	//更新血条中的毛球的血量颜色
+				}
+			document.getElementById("health_maoqiu").innerHTML =num_change(maoqiu_health.toFixed(0));	//更新文本框中的毛球的血量
+			document.getElementById("Maoqiu_health").style.width =maoqiu_health_rato+"%";	//更新血条中的毛球的血量
+
+			meiqiu_health_rato=meiqiu_data.meiqiu_health/meiqiu_data.health_total*100
+			if(meiqiu_health_rato>60){
+					document.getElementById("Meiqiu_health").style.borderColor="#adeeaf";	//更新血条中的煤球的血量颜色
+				}else if(meiqiu_health_rato>20){
+					document.getElementById("Meiqiu_health").style.borderColor="#f5cc43";	//更新血条中的煤球的血量颜色
+				}else if(20>=meiqiu_health_rato){
+					document.getElementById("Meiqiu_health").style.borderColor="#ff7474";	//更新血条中的煤球的血量颜色
+				}
+			document.getElementById("health_meiqiu_txt").innerHTML =num_change(meiqiu_data.meiqiu_health.toFixed(0));	//更新文本框中敌人血量
+			document.getElementById("Meiqiu_health").style.width =meiqiu_health_rato+"%";	//更新血条中的煤球的血量
+
+			document.getElementById("Ship_name").innerHTML = localStorage.ship_name;
+			document.getElementById("health_xx").innerHTML = num_change(xx_health.toFixed(0)); 	//更新文本框中的飞船血量
+			xx_health_rato=xx_health/xx_health_total*100
+			if(xx_health_rato>60){
+					document.getElementById("XX_health").style.borderColor="#adeeaf";	//更新血条中的飞船血量颜色
+				}else if(xx_health_rato>20){
+					document.getElementById("XX_health").style.borderColor="#f5cc43";	//更新血条中的飞船血量颜色
+				}else if(20>=xx_health_rato){
+					document.getElementById("XX_health").style.borderColor="#ff7474";	//更新血条中的飞船血量颜色
+				}
+			document.getElementById("XX_health").style.width = xx_health_rato+"%";	//更新血条中的飞船血量
+			document.getElementById("Guns_xx").innerHTML = "武器等级:"+ xx_guns;	//更新文本框中的飞船的机关炮数量
+			document.getElementById("Shields_xx").innerHTML = "装甲等级:"+ xx_shields;	//更新文本框中的飞船的护盾数量
+			document.getElementById("Engine_xx").innerHTML = "引擎等级:"+ xx_engines;	//更新文本框中的飞船的锅炉数量
+@ -1007,7 +1083,8 @@
+			document.getElementById("bootycoaltotal").innerHTML =  booty_coal_total;	//更新抢夺的岚星晶矿
+			document.getElementById("Maoqiutotal").innerHTML =  maoqiukill_num;	//更新战胜的毛球数
+			document.getElementById("Meiqiutotal").innerHTML =  meiqiukill_num;	//更新战胜的煤球数
+			document.getElementById("skillpointtotal").innerHTML=skillpoint_total;
+			document.getElementById("skillpointtotal").innerHTML=localStorage.skillpoint_total;
+			console.log(localStorage.skillpoint_total);
+			document.getElementById("Daybosstotal").innerHTML =  dayboss_num;	//更新战胜的每日boss数
+
+		}
+@ -1066,7 +1143,7 @@
+
+			gain_station=game_round*5;
+ 			writeLogOl("你发现了不知道是谁留下的"+gain_station+"座采集站");
+			skillpoint=parseFloat(localStorage.skillpoint)+30*game_round;
+			skillpoint=parseFloat(localStorage.skillpoint)+10*game_round;
+			skillpoint_total=skillpoint;
+ 			localStorage.skillpoint = skillpoint;
+ 			localStorage.skillpoint_total=skillpoint_total;
+@ -1081,9 +1158,10 @@
+
+
+		function Clear_confirm(){    /* 绑定事件 */
+ 			n=Math.floor(Lv/50);
+ 			new $Msg({
+				title:"重置游戏",
+				content:"飞船准备充分了，随时可以飞向深空，您确定要开始一段新的探索吗吗？",
+				content:"飞船准备好了随时可以飞向深空，您确定要开始一段新的探索吗吗？将获得超动子 x "+n,
+            	confirm:function(){
+              		new $Msg({content:"是时候重新出发了，您飞离了岚星向着宇宙深处远去。游戏已重置"});
+					Clear_();
+@ -1098,6 +1176,8 @@
+		function tongxunzhan_build(){//通讯站建设
+ 			if(tongxunzhan==0){
+				if (coal>1000&& maoqiukill_num>0 && meiqiukill_num>0){
+					new $Msg({title:"通讯站建设",
+							content:"你完成了通讯站建设，现在你可以和外界进行联系了"});
+					writeLogOl("通讯站建设完毕，开始向宇宙送信！");
+					coal-=1000;
+					tongxunzhan=1;
+@ -1107,60 +1187,82 @@
+					writeLogOl("材料不足，需要：岚星晶矿1000，并战胜毛球和小怪各1只")
+				}
+			}else {
+ 				coal-=100;
+ 				writeLogOl("你消耗了100岚星晶矿进行了一次通信");
+ 				i=Math.round(Math.random()*14);
+ 				switch (i) {  //离散值判断
+					case 1 :
+						writeLogOl("滴滴滴~你和宇宙中的潮澜人进行了一次通信，他们生活在一个全是海洋的星球，你很好奇他们是怎么发展出文明的");
+						break;
+					case 2 :
+						writeLogOl("滴滴滴~你和宇宙中的地球人进行了一次通信，他们自称失去了母星正在流浪，诶我不就是地球人吗？？");
+						break;
+					case 3 :
+						writeLogOl("滴滴滴~你和宇宙中的徙星鸟进行了一次通信，你很好奇对方是怎么独自在宇宙中飞行的，但是对方并不想理你");
+						break;
+					case 4 :
+						writeLogOl("滴滴滴~你和宇宙中的汐海人进行了一次通信，她们是海洋文明，你很好奇她们的飞船是不是个大水缸");
+						break;
+					case 5 :
+						writeLogOl("滴滴滴~你和宇宙中的祈月人进行了一次通信，对方试图说服你信仰某个宗教，但是你没听明白是什么");
+						break;
+					case 6 :
+						writeLogOl("滴滴滴~你和宇宙中的昕羽进行了一次通信，昕羽的科学家告诉你如何利用电磁波寻找岚星晶矿，你试了下还真行！！岚星晶矿+1");
+						coal=coal+1;
+						coal_total=coal_total+1;
+						fresh_text();
+						break;
+					case 7 :
+						writeLogOl("滴滴滴~你和宇宙中的恒洸进行了一次通信，对方自称有2600多岁了，你很羡慕并且试图说服自己他们只是的公转周期更快");
+						break;
+					case 8 :
+						writeLogOl("滴滴滴~你和宇宙中的妖族进行了一次通信，你很震惊小时候故事里的种族真的存在，你满脑子想着兽耳娘形象，没注意对方接下来说了什么");
+						break;
+					case 9 :
+						writeLogOl("滴滴滴~你和宇宙中的织梦者进行了一次通信，对方只是好奇的瞥了一下，你无法理解对方的存在，但是你好像抓住了什么灵感");
+						break;
+					case 10 :
+						writeLogOl("滴滴滴~你和宇宙中的灵魂调制者进行了一次通信，对方好像很有兴趣的发送了很多信息，但是只看见通信灯闪烁却完全没接受到");
+						break;
+					case 11 :
+						writeLogOl("滴滴滴~你和宇宙中的毛玉进行了一次通信，对方没说几句话就被一个叫理香子的抓走了");
+						break;
+					case 12 :
+						writeLogOl("滴滴滴~你和宇宙中的樱陌进行了一次通信，对方告诉你高数很重要，要好好学");
+						break;
+					default :
+						if (dis!=1){
+							dis=1;
+							writeLogOl("滴滴滴~你与dis完成了一次交易，他前来帮助你战斗了");
+							hide_show()
+						}else {
+							writeLogOl("滴滴滴~你和宇宙中的不知名种族进行了一次通信，不过你完全没看懂他们的信号");
+						}
+ 				if(coal>=100){
+ 					coal-=100;
+					writeLogOl("你消耗了100岚星晶矿进行了一次通信");
+					i=Math.round(Math.random()*16);
+					switch (i) {  //离散值判断
+						case 1 :
+							writeLogOl("滴滴滴~你和宇宙中的潮澜人进行了一次通信，他们生活在一个全是海洋的星球，你很好奇他们是怎么发展出文明的");
+							break;
+						case 2 :
+							writeLogOl("滴滴滴~你和宇宙中的地球人进行了一次通信，他们自称失去了母星正在流浪，诶我不就是地球人吗？？");
+							break;
+						case 3 :
+							writeLogOl("滴滴滴~你和宇宙中的徙星鸟进行了一次通信，你很好奇对方是怎么独自在宇宙中飞行的，但是对方并不想理你");
+							break;
+						case 4 :
+							writeLogOl("滴滴滴~你和宇宙中的汐海人进行了一次通信，她们是海洋文明，你很好奇她们的飞船是不是个大水缸");
+							break;
+						case 5 :
+							writeLogOl("滴滴滴~你和宇宙中的祈月人进行了一次通信，对方试图说服你信仰某个宗教，但是你没听明白是什么");
+							break;
+						case 6 :
+							writeLogOl("滴滴滴~你和宇宙中的昕羽进行了一次通信，昕羽的科学家告诉你如何利用电磁波寻找岚星晶矿，你试了下还真行！！岚星晶矿+1");
+							coal=coal+1;
+							coal_total=coal_total+1;
+							fresh_text();
+							break;
+						case 7 :
+							writeLogOl("滴滴滴~你和宇宙中的恒洸进行了一次通信，对方自称有2600多岁了，你很羡慕并且试图说服自己他们只是的公转周期更快");
+							break;
+						case 8 :
+							writeLogOl("滴滴滴~你和宇宙中的妖族进行了一次通信，你很震惊小时候故事里的种族真的存在，你满脑子想着兽耳娘形象，没注意对方接下来说了什么");
+							break;
+						case 9 :
+							writeLogOl("滴滴滴~你和宇宙中的织梦者进行了一次通信，对方只是好奇的瞥了一下，你无法理解对方的存在，但是你好像抓住了什么灵感");
+							break;
+						case 10 :
+							writeLogOl("滴滴滴~你和宇宙中的灵魂调制者进行了一次通信，对方好像很有兴趣的发送了很多信息，但是只看见通信灯闪烁却完全没接受到");
+							break;
+						case 11 :
+							writeLogOl("滴滴滴~你和宇宙中的毛玉进行了一次通信，对方没说几句话就被一个叫理香子的抓走了");
+							break;
+						case 12 :
+							writeLogOl("滴滴滴~你和宇宙中的樱陌进行了一次通信，对方告诉你高数很重要，要好好学");
+							break;
+						case 13 :
+							if (xinghuan!=1){
+								xinghuan=1;
+								writeLogOl("滴滴滴~你与星幻建立了联系，他指导你进行了一次土法升级核心提炼，你获得了升级核心+10");
+								Upcore+10;
+								localStorage.xinghuan=xinghuan;
+								fresh_text();
+								hide_show()
+							}else {
+								writeLogOl("滴滴滴~你和宇宙中的不知名种族进行了一次通信，不过你完全没看懂他们的信号");
+							}
+							break;
+						case 14 :
+							writeLogOl("滴滴滴~你接到了一个神秘组织的赏金任务！");
+							Get_dayboss();
+							break;
+						default :
+							if (dis!=1){
+								dis=1;
+								writeLogOl("滴滴滴~你与dis完成了一次交易，他前来帮助你战斗了");
+								hide_show()
+							}else {
+								writeLogOl("滴滴滴~你和宇宙中的不知名种族进行了一次通信，不过你完全没看懂他们的信号");
+							}
+
+							break;
+					}
+
+						break;
+				}else {
+ 					writeLogOl("晶矿不足，需要：岚星晶矿100")
+				}
+
+			}
+		}
+
+@ -1191,7 +1293,7 @@
+				document.getElementById("Spacerefinestation").style.display="inline-block"
+				document.getElementById("equipment_button").style.display="inline-block";
+				document.getElementById("equipment_up_button").style.display="inline-block";
+				document.getElementById("Equipbox").style.display="";
+
+			}else {
+				document.getElementById("space_gain_station_button").style.display="none";
+				document.getElementById("space_refine_station_button").style.display="none";
+@ -1200,19 +1302,33 @@
+				document.getElementById("Spacerefinestation").style.display="none"
+				document.getElementById("equipment_button").style.display="none";
+				document.getElementById("equipment_up_button").style.display="none";
+				document.getElementById("Equipbox").style.display="none";
+
+			}
+			//大冒险功能键
+			// if(damaoxian==1){
+			// 	document.getElementById("Damaoxian_button").style.display="";
+			// }else {
+			// 	document.getElementById("Damaoxian_button").style.display="none";
+			// }
+
+			//战斗3按键
+			if(meiqiu_flag==1 || maoqiu_flag==1 || dayboss_flag==1){
+				document.getElementById("repair_button").style.display="";
+				document.getElementById("daoxue_fight_button").style.display="";
+
+				document.getElementById("escape_button").style.display="";
+
+				if(daoxue==1){
+					document.getElementById("daoxue_fight_button").style.display="";
+				}else {
+					document.getElementById("daoxue_fight_button").style.display="none";
+				}
+
+			}else {
+				document.getElementById("repair_button").style.display="none";
+				document.getElementById("daoxue_fight_button").style.display="none";
+				document.getElementById("escape_button").style.display="none";
+			}
+
+			if(xx_health<(xx_health_total/2)){
+				document.getElementById("repair_button").style.display="";
+			}
+@ -1256,12 +1372,26 @@
+				document.getElementById("Xiaoxiao").style.visibility="hidden";
+				document.getElementById("tongxunzhan_task").style.display="none";
+			}
+			//律灵
+			if (lvling!=0){
+				document.getElementById("Lvling").style.visibility="visible";
+				document.getElementById("Upcore_refine_task").style.display="";
+			}else {
+				document.getElementById("Lvling").style.visibility="hidden";
+				document.getElementById("Upcore_refine_task").style.display="none";
+			}
+			//dis
+			if (dis!=0){
+				document.getElementById("Dis").style.visibility="visible";
+			}else {
+				document.getElementById("Dis").style.visibility="hidden";
+			}
+			//星幻
+			if (xinghuan!=0){
+				document.getElementById("Xinghuan").style.visibility="visible";
+			}else {
+				document.getElementById("Xinghuan").style.visibility="hidden";
+			}
+
+			//咕咕
+			if (gugu!=0){
+@ -1287,6 +1417,14 @@
+			}else {
+				document.getElementById("Changxi").style.visibility="hidden";
+			}
+			//泠鱼
+			if (lingyu!=0){
+				document.getElementById("Lingyu").style.visibility="visible";
+				document.getElementById("Equipbox").style.display="";
+			}else {
+				document.getElementById("Lingyu").style.visibility="hidden";
+				document.getElementById("Equipbox").style.display="none";
+			}
+
+			//道雪
+			if (daoxue==1){
+@ -1376,7 +1514,7 @@
+							}
+
+						}else {
+        					writeLogOl("煤炭不足");
+        					writeLogOl("晶矿不足");
+						}
+        				if(xx_health<(xx_health_total/3)){
+        					if(Math.random()>0.99){
+@ -1388,7 +1526,8 @@
+					}
+				},1000 //每秒回血1点
+				);
+				document.getElementById('heal_button_id').value = "自动修复已启动";
+				document.getElementById('heal_button_id').value = "自动修复中";
+				document.getElementById('heal_button_id').className = "button1";
+				heal_flag=1;
+			}else {
+        		stopheal();
+@ -1400,7 +1539,8 @@
+        function stopheal()
+		{
+            clearInterval(heal);
+            document.getElementById('heal_button_id').value = "自动修复关闭中";
+            document.getElementById('heal_button_id').value = "停止修复";
+            document.getElementById('heal_button_id').className = "button_fail";
+        }
+
+		 //初始一般概率自动挖掘
+@ -1651,13 +1791,14 @@
+		,2000);
+
+		function fight_end(){
+
+			Upcore_I=Math.floor(Lv/10);
+			//煤球战胜结算
+			if(meiqiu_flag==1){//战胜结算
+
+				if (meiqiu_data.meiqiu_health<=0 && xx_health>0){
+					writeLogOl02("经过了一番苦斗，你战胜了"+meiqiu_data.meiqiu_name)
+					writeLogOl("经过了一番苦斗，你战胜了"+meiqiu_data.meiqiu_name+"！并且夺取了岚星晶矿+"+(5*Lv)+" 升级核心+1")
+					Upcore+=1;
+					writeLogOl("经过了一番苦斗，你战胜了"+meiqiu_data.meiqiu_name+"！并且夺取了岚星晶矿+"+(5*Lv)+" 升级核心+"+(1+Upcore_I))
+					Upcore=Upcore+1+Upcore_I;
+					coal=coal+(5*Lv);	//岚星晶矿战利品
+					booty_coal_total+=(5*Lv);	//统计战利品数量
+					meiqiukill_num++;
+@ -1667,7 +1808,7 @@
+					}
+					meiqiu_flag=0;
+					fresh_text();	//更新文本框中的岚星晶矿数量
+					hide_show();	//恢复显示界面
+					hide_show();	//结束战斗恢复显示界面
+				}
+			}
+
+@ -1675,8 +1816,8 @@
+			if(maoqiu_flag==1){
+				if (maoqiu_health<=0){
+					writeLogOl02("经过艰苦的战斗，你打败了霸主毛球")
+					writeLogOl("经过艰苦的战斗，你打败了霸主毛球，薅到了岚星晶矿+"+(35+Lv*5)+" 升级核心+10")
+					Upcore+=10;
+					writeLogOl("经过艰苦的战斗，你打败了霸主毛球，薅到了岚星晶矿+"+(35+Lv*5)+" 升级核心+"+(10+Upcore_I))
+					Upcore=Upcore+10+Upcore_I;
+					coal+=35+Lv*5;
+					coal_total++;
+					booty_coal_total+=35+Lv*5;
+@ -1684,22 +1825,24 @@
+					maoqiu_flag=0;
+					mao_t=0;
+
+					fresh_text();
+					hide_show();
+					fresh_text();	//更新文本框中的岚星晶矿数量
+					hide_show();	//结束战斗恢复显示界面
+					maoqiu_health=parseFloat(localStorage.maoqiu_health);//退循环
+				}
+			}
+
+
+			//每日boss结束判断
+			if(dayboss_flag==1){
+				if(dayboss_data.health<0){
+					localStorage.dayboss_data_lifenum-=1;
+					if(localStorage.dayboss_data_lifenum>=0){
+						dayboss_data.health=Math.round(Math.pow(Lv,1.8)*2+10*Lv)*(Math.random()+1)*10;
+						dayboss_data.health=Math.round(Math.pow(Lv,1.8)*2+10*Lv)*(Math.random()+1)*5;
+						dayboss_data.health_total=dayboss_data.health;
+						coal+=10*Lv*Lv;
+						booty_coal_total+=10*Lv*Lv;	//统计战利品数量
+						writeLogOl("你捡到了"+dayboss_data.name+"掉落的"+(10*Lv*Lv)+"岚星晶矿");
+						Upcore=Upcore+20+Upcore_I;
+						writeLogOl("你捡到了"+dayboss_data.name+"掉落的"+(10*Lv*Lv)+"岚星晶矿、"+
+						(20+Upcore_I)+"单位升级核心");
+
+					}else{
+						dayboss_victory=1;
+@ -1712,17 +1855,25 @@
+						Upcore+=10*Lv
+						writeLogOl("你打败了"+dayboss_data.name+"，收获了岚星晶矿+"+(10*Lv*Lv)
+						+"，收获了星空结晶+"+(10*Lv*Lv)+"，收获了升级核心+"+(Lv*10));
+
+
+					}
+
+				}
+
+				fresh_text();
+				hide_show();
+				fresh_text();//更新文本框中的岚星晶矿数量
+				hide_show();//结束战斗恢复显示界面
+				document.getElementById("Dayboss_health").innerHTML=num_change(dayboss_data.health.toFixed(0)); //更新boss的血量
+				dayboss_health_rato=dayboss_data.health/dayboss_data.health_total*100
+				if(dayboss_health_rato>60){
+					document.getElementById("Dboss_health").style.borderColor="#adeeaf";	//更新血条中的boss的血量颜色
+				}else if(dayboss_health_rato>20){
+					document.getElementById("Dboss_health").style.borderColor="#f5cc43";	//更新血条中的boss的血量颜色
+				}else if(20>=dayboss_health_rato){
+					document.getElementById("Dboss_health").style.borderColor="#ff7474";	//更新血条中的boss的血量颜色
+				}
+				document.getElementById("Dboss_health").style.width =dayboss_health_rato+"%";	//更新血条中的boss的血量
+				document.getElementById("Dayboss_name").innerHTML=dayboss_data.name + "("+localStorage.dayboss_data_lifenum+"/10)"; //更新boss的血量
+			}
+			Up_power();
+		}
+
+		function writeyourfightlog(your,name,fight_data){
+@ -1809,7 +1960,7 @@
+					xx_health=1;
+
+				}
+				fresh_text();
+				fresh_text();//战败结束boss战斗更新文本框中的岚星晶矿数量
+			}
+		},5000)
+
+@ -1853,7 +2004,7 @@
+				}
+			}
+
+			fresh_text();
+			fresh_text();//毛球战逻辑
+
+		},2000);
+
+@ -1884,7 +2035,7 @@
+				//从存档中取回血量
+				xx_health=1;
+
+				fresh_text();	//更新文本框中的岚星晶矿数量
+				fresh_text();	//// 小怪战逻辑
+				hide_show();	//恢复显示界面
+
+			}
+@ -1930,11 +2081,6 @@
+		}
+
+		function button_check(){
+			if(Upcore>=2*Lv) {	//升级所需岚星晶矿的公式为 等级*等级+5
+				document.getElementById("shengji").className="button1";
+			}else {
+				document.getElementById("shengji").className="button_fail";
+			}
+
+			if(gain_station<Lv+50 && coal>=gain_station*10+20) {
+				document.getElementById("gain_station_button").className="button1";
+@ -1994,16 +2140,35 @@
+					document.getElementById("tongxunzhan_button").className="button_fail";
+				}
+			}
+			if(Upcore_refine_task==1){
+				document.getElementById("Upcore_refine_button").className="button1";
+			}else {
+				// document.getElementById("Upcore_refine_button").value="建设通讯站";
+				if(maoqiukill_num>=(task_maoqiu+10) && xinghuan==1 && coal>=5000 && space_metal>=1000){
+					document.getElementById("Upcore_refine_button").className="button1";
+				}else {
+					document.getElementById("Upcore_refine_button").className="button_fail";
+				}
+			}
+
+		}
+
+		function Choose_equipment_button(){
+		function Choose_equipment1_button(){
+			if (equip1==0){
+				equip1=1;
+				equip2=0;
+			}else if (equip2==0){
+				equip1=0;
+			}else {
+				writeLogOl("当前已经装备护卫1")
+			}
+			equipment_fresh();
+
+		}
+		function Choose_equipment2_button(){
+			if (equip2==0){
+				equip2=1;
+				equip1=0;
+			}else {
+				writeLogOl("当前已经装备护卫2")
+			}
+			equipment_fresh();
+
+@ -2125,63 +2290,83 @@
+
+		//点升级的按钮逻辑
+		//升级表
+		//0		1	2	 3	 4    5    6    7    8    9    10    11
+		//5		6	9   14  21   30   41   54   69   86   105   126
+
+		var Upcore_refine_flag=0;//核心提炼任务，和启动停止
+		function Upcore_refine_building(){
+
+		function Up_power(){
+			if(Upcore_refine_task==0){
+				if(maoqiukill_num>=(task_maoqiu+10) && xinghuan==1 && coal>=5000 && space_metal>=1000){
+					Upcore_refine_task=1;
+					localStorage.setItem("Upcore_refine_task", 1);
+					writeLogOl("你完成了核心提炼站的修建，开启提炼站每10秒消耗"+0.5*Lv*Lv+"岚星晶矿，提炼1单位升级核心");
+					document.getElementById("Upcore_refine_button").value="提炼核心"
+
+			if (Upcore>=2*Lv) {	//升级所需岚星晶矿的公式为 等级*5
+				}else{
+					writeLogOl("你需要收集10只毛球的能量核，并在星幻的帮助下，消耗5000岚星晶矿和1000星空结晶来完成建设。")
+				}
+
+				Upcore-=Lv*2;
+			}else {
+				if (Upcore_refine_flag==0){
+					if((10000-100*game_round)>1000){
+						Upcore_refine_timer=(10000-100*game_round)
+					}else {
+						Upcore_refine_timer=1000;
+					}
+
+				Lv++;//扣除岚星晶矿,提升等级
+				xx_health_grow();
+
+				if(fengshi==1 && daoxue==0 && Lv>30){
+					writeLogOl("从宇宙中传来电波，你又接到了风逝的电话！！！")
+					writeLogOl("风逝帮你改造了飞船，你可以摇人了！！！（道雪的支援到来了）")
+					daoxue=1;
+					localStorage.daoxue=daoxue;
+					hide_show();
+				}
+					Upcore_refine=setInterval(
+					function (){
+						if(coal >0.5*Lv*Lv && space_metal>0.1*Lv*Lv){
+
+				if(fengshi==0 && tongxunzhan==1){
+					xx_health+=100;
+					writeLogOl("从宇宙中传来电波，你接到了风逝的电话！！！")
+					writeLogOl("在风逝的指导下，你获得了先进科技！飞船血量+100")
+					fengshi=1;
+					localStorage.fengshi=fengshi;
+							Upcore++;
+							coal-=Math.ceil(0.5*Lv*Lv);
+							space_metal-=Math.ceil(0.1*Lv*Lv)
+							Up_power();
+
+						}else {
+							writeLogOl("矿物不足，提炼升级核心需要岚星晶矿"+(0.5*Lv*Lv)+"、星空结晶"+(0.1*Lv*Lv));
+						}
+						//更新数量
+						fresh_text();
+						hide_show();
+					},Upcore_refine_timer //每10秒获取1点升级核心
+					);
+					document.getElementById('Upcore_refine_button').value = "提炼核心";
+					document.getElementById('Upcore_refine_button').className = "button1";
+					Upcore_refine_flag=1;
+
+				}else {
+					stopUpcore_refine();
+					hide_show();
+					Upcore_refine_flag=0;
+				}
+			}
+		}
+
+				fresh_text();
+				writeLogOl("好耶！升级了"+"飞船升到了"+Lv+"级");
+		function stopUpcore_refine()//停止升级核心提炼
+		{
+            clearInterval(Upcore_refine);
+            document.getElementById('Upcore_refine_button').value = "停止提炼";
+            document.getElementById('Upcore_refine_button').className = "button_fail";
+        }
+
+				button_check();
+		//升级飞船
+		function Up_power(){
+
+			}else{//岚星晶矿不足报错
+			if (Upcore>=2*Lv) {	//升级所需升级核心的公式为 等级*2
+
+				writeLogOl("升级核心不足!\n升级需要升级核心 "+(Lv*2));
+			}
+				Upcore-=Lv*2;
+
+			if (fengshi==1 && game_space_choose==0){
+				game_space_choose=1; //开放星空阶段
+				new $Msg({
+					title:"近地轨道建设",
+					content:"现在通过在近地轨道建设空间采集设施来建设新的装备"
+				})
+				writeLogOl("开放了近地轨道建设系统")
+				writeLogOl("开放了护卫设施建设")
+				Lv++;//扣除岚星晶矿,提升等级
+				xx_health_grow();
+
+				if(localStorage.game_round>0){
+					space_gain_station=localStorage.game_round*5;
+					writeLogOl("你发现了不知谁留下的"+space_gain_station+"座星空采集站");
+				}
+				Up_power_event();
+
+				fresh_text();
+				button_check();
+				writeLogOl("好耶！升级了"+"飞船升到了"+Lv+"级");
+				hide_show();
+				button_check();
+
+			}
+
+			//yumao==1 && xuemao==1 && changming==1 && daoxue==1 && xx_gundams==1 &&
+@ -2218,6 +2403,113 @@
+
+		}
+
+		function Up_power_event(){
+
+			if(fengshi==0 && tongxunzhan==1){
+					writeLogOl("从宇宙中传来电波，你接到了风逝的电话！！！")
+					writeLogOl("在风逝的指导下，你将获得了先进科技！")
+				new $Msg({
+					title:"先进科技！",
+					content:"从宇宙中传来电波，你又接到了风逝的电话！！！在风逝的指导下，你将获得了先进科技！飞船设施升级将带来额外属性提升。"
+				})
+					fengshi=1;
+					localStorage.fengshi=fengshi;
+					hide_show();
+			}
+
+			if(xiaoxiao==1 && Lv==5){
+				writeLogOl("筱皛发现了废弃的遗迹设施，获得岚星晶矿+500");
+				new $Msg({
+					title:"发现遗迹！",
+					content:"筱皛发现了废弃的遗迹设施，获得岚星晶矿+500"
+				})
+				coal+=500;
+			}
+
+			if(changming==1 && xiaoxiao==1 && Lv==10){
+				writeLogOl("长明帮助你拆解了废弃设施，获得技能点+10");
+				new $Msg({
+					title:"变废为宝！",
+					content:"长明帮助你拆解了废弃设施，获得技能点+10"
+				})
+				skillpoint=parseFloat(localStorage.skillpoint);
+				skillpoint_total=parseFloat(localStorage.skillpoint_total);
+
+				skillpoint=skillpoint+10;
+				skillpoint_total=skillpoint_total+10;
+
+				localStorage.skillpoint_total = skillpoint_total;
+				localStorage.skillpoint = skillpoint;
+			}
+			if(fengshi==1 && daoxue==0 && Lv>20){
+					writeLogOl("从宇宙中传来电波，你又接到了风逝的电话！！！")
+					writeLogOl("风逝帮你改造了飞船，你可以摇人了！！！（道雪的支援到来了）")
+				new $Msg({
+					title:"道雪支援",
+					content:"从宇宙中传来电波，你又接到了风逝的电话！！！风逝帮你改造了飞船，你可以摇人了！！！（道雪的支援到来了）"
+				})
+					daoxue=1;
+					localStorage.daoxue=daoxue;
+					hide_show();
+			}
+
+			if(Lv>=30 && damaoxian==0){
+				damaoxian=1;
+				localStorage.damaoxian=1;
+				new $Msg({
+					title:"赏金任务！",
+					content:"你的名号已经渐渐传开了，开始有组织希望借用你的力量了。开启赏金任务战斗，赏金任务可以通过通讯站进行接取。每个时段只能完成一次赏金任务。完成任务可以获得大量报酬。"
+				})
+				hide_show();
+			}
+
+			if(Lv>=40 && lingyu==0){
+				writeLogOl("你遇见了泠鱼，泠鱼提供了护卫");
+
+				lingyu=1;
+				localStorage.lingyu=1;
+				space_metal+=500;
+				get_equipment();
+
+				fresh_text();
+				button_check();
+				hide_show();
+			}
+
+			if(Lv>=100 && tongxunzhan>0 && lvling==0){
+				writeLogOl("风逝安排了律灵前来支援");
+				lvling=1;
+				localStorage.lvling=lvling;
+				task_maoqiu=localStorage.maoqiukill_num;
+				localStorage.task_maoqiu=task_maoqiu;
+				document.getElementById("Upcore_refine_button").value="建设核心提炼站"
+				new $Msg({
+					title:"核心提炼站建设",
+					content:"律灵带来了升级核心提炼站的建设方案：你需要收集10只毛球的能量核，并在星幻的帮助下，消耗5000岚星晶矿和1000星空结晶来完成建设。"
+				})
+				}
+
+			if (fengshi==1 && game_space_choose==0 && Lv>=50){
+				game_space_choose=1; //开放星空阶段
+				localStorage.game_space_choose=1;
+				new $Msg({
+					title:"近地轨道建设",
+					content:"现在通过在近地轨道建设空间采集设施来建设新的装备"
+				})
+				writeLogOl("开放了近地轨道建设系统")
+				writeLogOl("开放了护卫设施建设")
+
+				if(localStorage.game_round>0){
+					localStorage.space_gain_station=localStorage.game_round*5;
+					writeLogOl("你发现了不知谁留下的"+localStorage.space_gain_station+"座星空采集站");
+				}
+
+				fresh_text();
+				button_check();
+				hide_show();
+			}
+		}
+
+		//采集站建设
+		function gain_station_build() {
+			if (gain_station<Lv+50){
+@ -2276,27 +2568,42 @@
+
+		//你的属性 装备
+		function yours(){
+			if (equip1==0){
+				xx_attach = (xx_guns+parseInt(localStorage.equip2_att) + (Math.floor(xx_guns/20)*5));
+				xx_defend = (xx_shields+parseInt(localStorage.equip2_def) + (Math.floor(xx_shields/20)*5));
+				xx_speed = (xx_engines+parseInt(localStorage.equip2_speed) + (Math.floor(xx_engines/20)*5));
+				xx_crit = parseInt(localStorage.equip2_crit);
+			}else if (equip2==0){
+				xx_attach = xx_guns+parseInt(localStorage.equip1_att) + (Math.floor(xx_guns/20)*5);
+				xx_defend = xx_shields+parseInt(localStorage.equip1_def) + (Math.floor(xx_shields/20)*5);
+				xx_speed = xx_engines+parseInt(localStorage.equip1_speed) + (Math.floor(xx_engines/20)*5);
+				xx_crit = parseInt(localStorage.equip1_crit);
+			if (fengshi==1){
+				if (equip1==0){
+					xx_attach = (xx_guns+parseInt(localStorage.equip2_att) + (Math.floor(xx_guns/20)*5));
+					xx_defend = (xx_shields+parseInt(localStorage.equip2_def) + (Math.floor(xx_shields/20)*5));
+					xx_speed = (xx_engines+parseInt(localStorage.equip2_speed) + (Math.floor(xx_engines/20)*5));
+					xx_crit = parseInt(localStorage.equip2_crit);
+				}else if (equip2==0){
+					xx_attach = xx_guns+parseInt(localStorage.equip1_att) + (Math.floor(xx_guns/20)*5);
+					xx_defend = xx_shields+parseInt(localStorage.equip1_def) + (Math.floor(xx_shields/20)*5);
+					xx_speed = xx_engines+parseInt(localStorage.equip1_speed) + (Math.floor(xx_engines/20)*5);
+					xx_crit = parseInt(localStorage.equip1_crit);
+				}
+			}else {
+				if (equip1==0){
+					xx_attach = xx_guns+parseInt(localStorage.equip2_att);
+					xx_defend = xx_shields+parseInt(localStorage.equip2_def);
+					xx_speed = xx_engines+parseInt(localStorage.equip2_speed);
+					xx_crit = parseInt(localStorage.equip2_crit);
+				}else if (equip2==0){
+					xx_attach = xx_guns+parseInt(localStorage.equip1_att);
+					xx_defend = xx_shields+parseInt(localStorage.equip1_def);
+					xx_speed = xx_engines+parseInt(localStorage.equip1_speed);
+					xx_crit = parseInt(localStorage.equip1_crit);
+				}
+			}
+
+		}
+
+
+		//你的血量成长
+		function xx_health_grow(){
+			skillpoint_data=Get_skillpoint();
+			skillpoint_data=Get_skillpoint(Lv);
+			skillpoint=skillpoint_data.skillpoint;
+			skillpoint_total=skillpoint_data.skillpoint_total;
+			xx_health =  Math.round(Math.pow(Lv,2)*1.5+Lv+50); //注意自动回血，雪喵伤害，升级回血
+			xx_health_total=Math.round(Math.pow(Lv,2)*1.5+Lv+50);//总血量
+			xx_health =  Math.round(Math.pow(Lv,2)*1.5+Lv+100); //注意自动回血，雪喵伤害，升级回血
+			xx_health_total=Math.round(Math.pow(Lv,2)*1.5+Lv+100);//总血量
+			localStorage.xx_health_total=xx_health_total;//总血量存储
+			fresh_text();	//更新文本框中的飞船血量
+		}
+@ -2463,32 +2770,52 @@
+		var equipment_type=0
+		function get_equipment(){
+
+			// eq_seed=Math.random()*1000;
+			// localStorage.eq_seed=eq_seed;
+			// Get_equipment(seed,Lv);
+			if(equip1==1){
+				equipment_type=localStorage.equip1_type;
+			}else if(equip2==1){
+				equipment_type=localStorage.equip2_type;
+			}
+			if (space_metal>10*Lv){
+				equipment_PR=Math.random()*10;
+				if (equipment_PR<4){
+					equipment_type=0; // 40%白色装备
+				}else if(equipment_PR<7.5){
+					equipment_type=1; // 35%绿色装备
+				}else if(equipment_PR<9.5){
+					equipment_type=2; // 20%紫色装备
+				}else if(equipment_PR<11){
+					equipment_type=3; // 5%金色装备
+				if(equipment_type==3){
+					new $Msg({
+						title:"重铸?",
+						content:"是否要重铸金色护卫",
+						confirm: (function (){build_equipment()}),
+					})
+				}else {
+					build_equipment();
+				}
+
+				equipment_value(equipment_type);
+				equipment_fresh();
+				space_metal-=10*Lv;
+			}else {
+				writeLogOl("星空结晶不足"+(10*Lv)+"，不能建造护卫单位")
+			}
+
+
+			// eq_seed=Math.random()*1000;
+			// localStorage.eq_seed=eq_seed;
+			// Get_equipment(seed,Lv);
+
+			fresh_text();
+			button_check();
+			hide_show();
+		}
+
+		function build_equipment(){
+			equipment_PR=Math.random()*10;
+			if (equipment_PR<4){
+				equipment_type=0; // 40%白色装备
+			}else if(equipment_PR<7.5){
+					equipment_type=1; // 35%绿色装备
+			}else if(equipment_PR<9.5){
+				equipment_type=2; // 20%紫色装备
+			}else if(equipment_PR<11){
+				equipment_type=3; // 5%金色装备
+			}
+			equipment_value(equipment_type);
+			equipment_fresh();
+			space_metal-=10*Lv;
+
+		}
+
+		//装备数值
+		function equipment_value(type){
+			sum = Math.floor(Lv/10)*30;
+@ -2564,10 +2891,40 @@
+		}
+		function Equipment_up_button(){
+			if(equip2==1){
+				Equipment_up("2");
+				if(window.event.ctrlKey){
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+					Equipment_up("2");
+				}else {
+					Equipment_up("2");
+				}
+
+			}
+			if(equip1==1){
+				Equipment_up("1");
+				if(window.event.ctrlKey){
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+					Equipment_up("1");
+				}else {
+					Equipment_up("1");
+				}
+
+			}
+		}
+
+@ -2811,16 +3168,36 @@
+
+		//点击升级护盾
+		function shields_button(){
+			var obj = document.getElementsByName("skill_button_radio");
+			for(var i=0; i<obj.length; i ++){
+				if(obj[i].checked){
+					num=parseFloat(obj[i].value);
+				}
+			}
+
+			if (skillpoint>0){
+
+				if(xx_gundams==0 && Math.random()>0.99){
+					writeLogOl("你灵机一动，造出了高达！！！")
+					writeLogOl("高达加入了战斗队列")
+					xx_gundams=1;
+					localStorage.xx_gundams=xx_gundams;
+					hide_show();
+					get_gundams();
+				}
+				if(window.event.ctrlKey || num==10){
+					if(skillpoint>=10){
+						xxshields();
+						xxshields();
+						xxshields();
+						xxshields();
+						xxshields();
+
+						xxshields();
+						xxshields();
+						xxshields();
+						xxshields();
+						xxshields();
+					}else {
+						writeLogOl("升级点不足，升级飞船可以获得升级点");
+					}
+
+				}else{
+				}else {
+					xxshields();
+				}
+
+@ -2834,17 +3211,36 @@
+
+		//点击升级武器
+		function guns_button(){
+			var obj = document.getElementsByName("skill_button_radio");
+			for(var i=0; i<obj.length; i ++){
+				if(obj[i].checked){
+					num=parseFloat(obj[i].value);
+				}
+			}
+
+			if (skillpoint>0){
+
+				if(xx_gundams==0 && Math.random()>0.99){
+					get_gundams();
+				}
+				if(window.event.ctrlKey || num==10){
+					if(skillpoint>=10){
+						xxguns();
+						xxguns();
+						xxguns();
+						xxguns();
+						xxguns();
+
+						xxguns();
+						xxguns();
+						xxguns();
+						xxguns();
+						xxguns();
+					}else {
+						writeLogOl("升级点不足，升级飞船可以获得升级点");
+					}
+
+					writeLogOl("你灵机一动，造出了高达！！！")
+					writeLogOl("高达加入了战斗队列")
+					xx_gundams=1;
+					localStorage.xx_gundams=xx_gundams;
+					hide_show();
+
+				}else{
+				}else {
+					xxguns();
+				}
+
+@ -2855,19 +3251,49 @@
+				writeLogOl("升级点不足，升级飞船可以获得升级点");
+			}
+		}
+		function get_gundams(){
+			writeLogOl("你灵机一动，造出了高达！！！")
+			writeLogOl("高达加入了战斗队列")
+			new $Msg({title:"高达!?",
+				content:"你灵机一动，造出了高达！！！高达将帮助你战斗"});
+			xx_gundams=1;
+			localStorage.xx_gundams=xx_gundams;
+			hide_show();
+		}
+
+		//点击升级引擎
+		function engines_button(){
+			var obj = document.getElementsByName("skill_button_radio");
+			for(var i=0; i<obj.length; i ++){
+				if(obj[i].checked){
+					num=parseFloat(obj[i].value);
+				}
+			}
+
+			if (skillpoint>0){
+
+				if(xx_gundams==0 && Math.random()>0.99){
+					writeLogOl("你灵机一动，造出了高达！！！")
+					writeLogOl("高达加入了战斗队列")
+					xx_gundams=1;
+					localStorage.xx_gundams=xx_gundams;
+					hide_show();
+					get_gundams();
+
+				}else{
+				}
+				if(window.event.ctrlKey || num==10){
+					if(skillpoint>=10){
+						xxengines();
+						xxengines();
+						xxengines();
+						xxengines();
+						xxengines();
+
+						xxengines();
+						xxengines();
+						xxengines();
+						xxengines();
+						xxengines();
+					}else {
+						writeLogOl("升级点不足，升级飞船可以获得升级点");
+					}
+
+				}else {
+					xxengines();
+				}
+
+@ -2879,7 +3305,7 @@
+			}
+		}
+		function Get_dayboss(){
+			var day_seed=$Gettime().year + $Gettime().mon + $Gettime().day;
+			var day_seed=$Gettime().year + $Gettime().mon + $Gettime().day+ $Gettime().h;
+
+
+			if (day_seed!=localStorage.dayboss_seed){
+@ -2891,16 +3317,16 @@
+				if (dayboss_flag==0){
+					dayboss_data=Getdayboss(Lv,day_seed);
+					dayboss_flag=1;
+					writeLogOl("大冒险，你遭遇了"+dayboss_data.name);
+					writeLogOl("你接到到了悬赏任务，消灭盘踞在岚星的"+dayboss_data.name);
+					Daybossdisplay(dayboss_data);
+					document.getElementById("Dayboss_health").innerHTML=num_change(dayboss_data.health.toFixed(0));
+					localStorage.dayboss_name=dayboss_data.name;
+				}else {
+					writeLogOl("没法行动，你被"+localStorage.dayboss_name+"纠缠住了");
+					writeLogOl("没法接取额外的赏金任务，你被"+localStorage.dayboss_name+"纠缠住了");
+				}
+
+			}else {
+				writeLogOl("今天你打败了冒险里的传奇敌人");
+				writeLogOl("你打败了该时段的赏金敌人");
+			}
+
+			fresh_text();
+@ -2987,16 +3413,16 @@
+						xx_health-= health_loss
+						writeLogOl02("毛球打出了暴击！造成了"+health_loss+"伤害","#b649ff");
+					}else {
+						xx_health-= health_loss
+						writeLogOl02("毛球打出了暴击！但是被你挡住了，造成了"+health_loss+"伤害","#7e7eff");
+						xx_health-= Math.ceil(health_loss/5)
+						writeLogOl02("毛球打出了暴击！但是被你挡住了，造成了"+Math.ceil(health_loss/5)+"伤害","#7e7eff");
+					}
+				}else {
+					if(fight_data.defended==1){
+						xx_health-= health_loss
+						writeLogOl02("毛球攻击了你！造成了"+health_loss+"伤害","#dbaaff");
+					}else {
+						xx_health-= health_loss
+						writeLogOl02("毛球攻击了你！但是被你挡住了，造成了"+health_loss+"伤害","#dbaaff");
+						xx_health-= Math.ceil(health_loss/5)
+						writeLogOl02("毛球攻击了你！但是被你挡住了，造成了"+Math.ceil(health_loss/5)+"伤害","#dbaaff");
+					}
+				}
+			}
+@ -3020,16 +3446,16 @@
+						xx_health-= health_loss
+						writeLogOl02(meiqiu_data.meiqiu_name+"打出了暴击！造成了"+health_loss+"伤害","#394fec");
+					}else {
+						xx_health-= health_loss
+						writeLogOl02(meiqiu_data.meiqiu_name+"打出了暴击！但是被你挡住了，造成了"+health_loss+"伤害","#6a7fff");
+						xx_health-= Math.ceil(health_loss/5)
+						writeLogOl02(meiqiu_data.meiqiu_name+"打出了暴击！但是被你挡住了，造成了"+Math.ceil(health_loss/5)+"伤害","#6a7fff");
+					}
+				}else {
+					if(fight_data.defended==1){
+						xx_health-= health_loss
+						writeLogOl02(meiqiu_data.meiqiu_name+"攻击了你！造成了"+health_loss+"伤害","#6473ea");
+					}else {
+						xx_health-= health_loss
+						writeLogOl02(meiqiu_data.meiqiu_name+"攻击了你！但是被你挡住了，造成了"+health_loss+"伤害","#6473ea");
+						xx_health-= Math.ceil(health_loss/5)
+						writeLogOl02(meiqiu_data.meiqiu_name+"攻击了你！但是被你挡住了，造成了"+Math.ceil(health_loss/5)+"伤害","#6473ea");
+					}
+				}
+			}
+@ -3192,8 +3618,8 @@
+					writeLogOl("你请求了支援并支付了酬金"+(5*Lv+30));
+					writeLogOl("收到岚星晶矿的道雪开着飞机丢了几块石头下来，沉重的打击了敌人！！！");
+					if(dayboss_flag==1){
+						dayboss_data.health-=Math.ceil(dayboss_data.health/50);
+						writeLogOl02("道雪轰炸了敌人，造成了"+dayboss_data.name+(Math.ceil(dayboss_data.health/50))+"伤害","orange");
+						dayboss_data.health-=Math.ceil(dayboss_data.health/20);
+						writeLogOl02("道雪轰炸了敌人，造成了"+dayboss_data.name+(Math.ceil(dayboss_data.health/20))+"伤害","orange");
+					}
+					if(maoqiu_flag==1){
+						maoqiu_health-=Math.ceil(maoqiu_health/5);
+@ -3254,8 +3680,8 @@
+		//战斗
+		function fight_(att_health,def_health, attach, defend, att_speed, def_speed, att_crit){//攻击者血, 防御者血,攻击者攻击值，防御者防御值，攻击者速度，防御者速度
+
+			fightspeed=Math.floor((2*Math.random())*att_speed);
+			defspeed=Math.floor((2*Math.random())*def_speed);
+			fightspeed=Math.floor((1+Math.random())*att_speed);
+			defspeed=Math.floor((1+Math.random())*def_speed);
+			delt_speed=fightspeed-defspeed;
+			def_speed=0.05*(delt_speed+20);
+			def_speed=Math.pow(Math.E,-def_speed);
+@ -3355,12 +3781,39 @@
+								</p>
+						</div>
+
+						<div id="skillpointtxt" style=" display:inline-block; width: 40%; text-align: justify">
+						<div id="skillpointtxt" style=" display:inline-block; width: 30%; text-align: justify">
+							<p style="margin-left: 5px" id="skillpoint">
+								当前升级点：
+							</p>
+
+						</div>
+						<div id="radio_change_button" style="display: inline-block;">
+							<button class="button1" type="button" onclick="show_button_radio()" style=" text-align: justify;">调整加点</button>
+						</div>
+						<script type="text/javascript">
+							function show_button_radio(){
+								let top_left= (getElementViewPosition("radio_change_button"));
+								document.getElementById("button_radio").style.left=top_left.x+"px";
+								document.getElementById("button_radio").style.top=top_left.y+"px";
+								document.getElementById("button_radio").style.display="";
+							}
+							function hide_button_radio(){
+								document.getElementById("button_radio").style.display="none";
+							}
+						</script>
+
+						<div class="PopupWindow" id="button_radio" style="display: none; position: fixed">
+							<div style="text-align: right">
+								<button type="button" style="border: aliceblue; margin:0px; background-color: aliceblue" onclick="hide_button_radio()">x</button>
+							</div>
+							<p class="ptxt">选择要使用的加点次数：</p>
+							<label style="display: inline-flex; ">
+									<input type="radio" name="skill_button_radio" value="1" checked="checked">+1
+									<input type="radio" name="skill_button_radio" value="10">+10
+							</label>
+						</div>
+
+
+					</form>
+
+					<form action="" id = "equipment" name="your_health" style="text-align: justify">
+@ -3370,7 +3823,7 @@
+								机炮数量:0
+							</p>
+							<div style=" display:inline-block;   text-align: justify">
+								<input class="button_fail" type="button" id="gun_button" value="升级武器" onclick="guns_button()" />
+								<input class="button_fail" type="button" id="gun_button" value="升级武器" onclick="guns_button()" style="margin-right: 0">
+							</div>
+						</div>
+
+@ -3379,7 +3832,7 @@
+								护盾等级:0
+							</p>
+							<div style=" display:inline-block;   text-align: justify">
+								<input class="button_fail" type="button" id="shield_button" value="升级防护" onclick="shields_button()" />
+								<input class="button_fail" type="button" id="shield_button" value="升级防护" onclick="shields_button()" style="margin-right: 0">
+							</div>
+						</div>
+
+@ -3388,13 +3841,13 @@
+								锅炉等级:0
+							</p>
+							<div style=" display:inline-block;  text-align: justify">
+								<input class="button_fail" type="button" id="engine_button" value="升级引擎" onclick="engines_button()" />
+								<input class="button_fail" type="button" id="engine_button" value="升级引擎" onclick="engines_button()" style="margin-right: 0">
+							</div>
+						</div>
+
+					</form>
+
+					<HR style="FILTER:alpha(opacity=50,finishopacity=0,style=1)" align="left" width="100%"color=#66ccff SIZE=2>
+					<HR align="left" width="100%"color=#66ccff SIZE=2>
+
+				</div>
+
+@ -3404,15 +3857,19 @@
+
+						<div>
+							<via action=" " id= "healing_button" style="">
+								<input class="button1" type="button" id="heal_button_id" name="heal_button" value="自动修复关闭中" onclick="startheal()" />
+								<input class="button_fail" type="button" id="heal_button_id" name="heal_button" value="准备修复" onclick="startheal()" />
+							</via>
+
+							<via action=" " id= "Upcore_refine_task" style=" display: none">
+								<input class="button_fail" type="button" id="Upcore_refine_button" value="核心精炼站" onclick="Upcore_refine_building()" />
+							</via>
+
+							<via action=" " id= "tongxunzhan_task" style=" display: none">
+								<input class="button_fail" type="button" id="tongxunzhan_button" value="建设通讯站" onclick="tongxunzhan_build()" />
+							</via>
+							<div style=" display:inline-block;  text-align: justify">
+								<input class="button1" type="button" value="大冒险！" onclick="Get_dayboss()" />
+							</div>
+<!--							<div style=" display:inline-block;  text-align: justify">-->
+<!--								<input class="button1" id="Damaoxian_button" type="button" value="大冒险！" style="display: none" onclick="Get_dayboss()" />-->
+<!--							</div>-->
+						</div>
+
+						<div>
+@ -3420,19 +3877,9 @@
+								<input class="button1" type="button" name="wajue" value="挖挖晶矿" onclick="Wa_coal()" />
+							</div>
+
+
+
+							<div style=" display:inline-block;  text-align: justify">
+								<input class="button_fail" type="button" id="gain_station_button" value="制造矿站" onclick="gain_station_build()" />
+							</div>
+
+							<div style=" display:inline-block;   text-align: justify">
+								<input class="button_fail" type="button" id="shengji" value="升级飞船" onclick="Up_power()" />
+							</div>
+						</div>
+
+						<div>
+
+							<div id="space_gain_station_button" style=" display:none;  text-align: justify">
+								<input class="button_fail" type="button" id="space_gain_station_button_txt" value="星空采集站" onclick="space_station_build()" />
+							</div>
+@ -3443,7 +3890,8 @@
+
+					</form>
+
+					<HR style="FILTER:alpha(opacity=50,finishopacity 0,style=1)" align="left" width="100%"color=#66ccff SIZE=2>
+
+					<HR align="left" width="100%"color=#66ccff SIZE=2>
+
+					<div style="padding-top: 0px; padding-bottom: 0px; font-size: x-small">
+
+@ -3475,10 +3923,69 @@
+						</script>
+					</div>
+
+					<HR style="FILTER:alpha(opacity=50,finishopacity=0,style=1)" align="left" width="100%"color=#66ccff SIZE=2>
+					<HR align="left" width="100%"color=#66ccff SIZE=2>
+
+				</form>
+					<form action="" id="Equipbox" style="display: none;">
+						<div class="button1" id="Equip_display" style=" border: 3px solid; text-align: center">
+							<p class="ptxt" style="display: inline-grid;width: 18%;font-size: x-small">当前护卫:</p>
+							<p class="ptxt" id="Equip_att" style="display: inline-grid;width: 19%;font-size: x-small"> 攻击：0 </p>
+							<p class="ptxt" id="Equip_def" style="display: inline-grid;width: 19%;font-size: x-small"> 防御：0 </p>
+							<p class="ptxt" id="Equip_speed" style="display: inline-grid;width: 19%;font-size: x-small"> 速度：0 </p>
+							<p class="ptxt" id="Equip_crit" style="display: inline-grid;width: 16%;font-size: x-small"> 暴击：0 </p>
+						</div>
+						<div id="equip_list" style="display: inline-flex">
+							<div style="margin-right:2em; ">
+								<div style="display: inline-grid;position: static">
+									<button class="button_equip_fax" type="button" id="Equip1_fax" style="border:5px solid aliceblue; background: aliceblue;display:inline-block;  text-align: justify">
+											<p class="ptxt" id="Equip1_name_fax" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+									</button>
+									<button class="button_equip_fail" type="button" id="Equip1" style="display:inline-block;  text-align: justify"
+								 	onmouseover="show_equipment1()"
+								 	onmouseout="equipment_fresh()"
+								 	onclick="Choose_equipment1_button()">
+										<p class="ptxt" id="Equip1_name" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip1_att" style="display: none;width: 20%;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip1_def" style="display: none;width: 20%;font-size: x-small"> 防御：0 </p>
+										<p class="ptxt" id="Equip1_speed" style="display: none;width: 20%;font-size: x-small"> 速度：0 </p>
+										<p class="ptxt" id="Equip1_crit" style="display: none;width: 20%;font-size: x-small"> 暴击：0 </p>
+									</button>
+								</div>
+							</div>
+
+							<div style="margin-right:2em; ">
+								<div style=" display: inline-grid; position:static">
+
+									<button class="button_equip_fax" type="button" id="Equip2_fax" style="border:5px solid aliceblue; background: aliceblue; display:inline-block;  text-align: justify">
+										<p class="ptxt" id="Equip2_name_fax" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+									</button>
+
+									<button class="button_equip_fail" type="button" id="Equip2" style="display:inline-block;  text-align: justify"
+							 		onmouseover="show_equipment2()"
+							 		onmouseout="equipment_fresh()"
+							 		onclick="Choose_equipment2_button()">
+										<p class="ptxt" id="Equip2_name" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip2_att" style="display: none;width: 20%;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip2_def" style="display: none;width: 20%;font-size: x-small"> 防御：0 </p>
+										<p class="ptxt" id="Equip2_speed" style="display: none;width: 20%;font-size: x-small"> 速度：0 </p>
+										<p class="ptxt" id="Equip2_crit" style="display: none;width: 20%;font-size: x-small"> 暴击：0 </p>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div style=" display:inline-table;  text-align: justify">
+							<button class="button_fail" type="button" id="equipment_button"  style="display: none" value="建造护卫" onclick="get_equipment()">
+								建造护卫
+							</button>
+
+							<button class="button1" type="button" id="equipment_up_button"  style="display: none" onclick="Equipment_up_button()">
+								升级护卫
+							</button>
+
+						</div>
+
+					</form>
+					<HR align="left" width="100%" style="border-bottom: 2px #66ccff dashed; border-top: 2px #66ccff dotted;">
+				</div>
+			</div>
+
+@ -3493,9 +4000,9 @@
+								<p class="ptxt" id="Ship_name">
+									普通飞船
+								</p>
+								<div style="display: inline-grid;width: 25%;" >
+								<div style="display: inline-grid;width: 24%;margin-right: 2px" >
+									<p class="ptxt">血量</p>
+									<p class="ptxt" id="health_xx">
+									<p class="ptxt" id="health_xx" >
+										血量: 0
+									</p>
+								</div>
+@ -3517,18 +4024,20 @@
+										速度值: 0
+									</p>
+								</div>
+								<div style="display: inline-grid;width: 18%;" >
+								<div style="display: inline-grid;width: 16%;" >
+									<p class="ptxt">暴击</p>
+									<p class="ptxt" id="crit_xx">
+										暴击值: 0
+									</p>
+								</div>
+
+								<div style="background-color: white; width: 100%; text-align: center; border: #adeeaf 2px solid;border-radius: 25%">
+									<HR  id="XX_health" SIZE=2 COLOR="#adeeaf" style="text-align: left; margin: 0; width: 100%">
+								</div>
+							</div>
+
+							<div id="F7_meiqiu" class="character" style=" display:none">
+								<p class="ptxt" id="meiqiu_name">小煤球兽</p>
+								<div style="display: inline-grid;width: 25%;" >
+								<div style="display: inline-grid;width: 24%;margin-right: 2px" >
+									<p class="ptxt">血量</p>
+									<p class="ptxt" id="health_meiqiu_txt">血量</p>
+								</div>
+@ -3544,17 +4053,20 @@
+									<p class="ptxt">速度</p>
+									<p class="ptxt" id="meiqiu_speed">速度</p>
+								</div>
+								<div style="display: inline-grid;width: 18%;">
+								<div style="display: inline-grid;width: 16%;">
+									<p class="ptxt">暴击</p>
+									<p class="ptxt" id="meiqiu_crit">暴击</p>
+								</div>
+								<div style="background-color: white; width: 100%; text-align: center; border: #adeeaf 2px solid;border-radius: 25%">
+									<HR  id="Meiqiu_health" SIZE=2 COLOR="#adeeaf" style="text-align: left; margin: 0; width: 100%">
+								</div>
+							</div>
+
+							<div id="F6_maoqiu" class="character" style="display:none">
+								<p class="ptxt" id="maoqiu_name">霸主毛球</p>
+								<div style="display: inline-grid;width: 25%;" >
+								<div style="display: inline-grid;width: 24%;margin-right: 2px" >
+									<p class="ptxt">血量</p>
+									<p class="ptxt" id="health_maoqiu">血量: 0</p>
+									<p class="ptxt" id="health_maoqiu" >血量: 0</p>
+								</div>
+								<div style="display: inline-grid;width: 19%;" >
+									<p class="ptxt">攻击</p>
+@ -3568,36 +4080,40 @@
+									<p class="ptxt">速度</p>
+									<p class="ptxt" id="maoqiu_speed">毛球速度</p>
+								</div>
+								<div style="display: inline-grid;width: 18%" >
+								<div style="display: inline-grid;width: 16%" >
+									<p class="ptxt">暴击</p>
+									<p class="ptxt" id="maoqiu_crit">毛球暴击</p>
+								</div>
+
+								<div style="background-color: white; width: 100%; text-align: center; border: #adeeaf 2px solid;border-radius: 25%">
+									<HR  id="Maoqiu_health" SIZE=2 COLOR="#adeeaf" style="text-align: left; margin: 0; width: 100%">
+								</div>
+							</div>
+
+							<div id="F8_Dayboss" class="character" style=" border-color: #ff6449; display:none">
+								<p class="ptxt" id="Dayboss_name">掠夺者舰队</p>
+								<div style="display: inline-grid ;width: 20%;" >
+								<div style="display: inline-grid ;width: 24%; margin-right: 2px" >
+									<p class="ptxt">血量</p>
+									<p class="ptxt" id="Dayboss_health">血量: 0</p>
+									<p class="ptxt" id="Dayboss_health" >血量: 0</p>
+								</div>
+								<div style="display: inline-grid;width: 20%;" >
+								<div style="display: inline-grid;width: 19%;" >
+									<p class="ptxt">攻击</p>
+									<p class="ptxt" id="Dayboss_att">毛球攻击</p>
+									<p class="ptxt" id="Dayboss_att">boss攻击</p>
+								</div>
+								<div style="display: inline-grid;width: 20%;" >
+								<div style="display: inline-grid;width: 19%;" >
+									<p class="ptxt">防御</p>
+									<p class="ptxt" id="Dayboss_def">毛球防御</p>
+									<p class="ptxt" id="Dayboss_def">boss防御</p>
+								</div>
+								<div style="display: inline-grid;width: 20%;" >
+								<div style="display: inline-grid;width: 19%;" >
+									<p class="ptxt">速度</p>
+									<p class="ptxt" id="Dayboss_speed">毛球速度</p>
+									<p class="ptxt" id="Dayboss_speed">boss速度</p>
+								</div>
+								<div style="display: inline-grid;width: 20%;" >
+								<div style="display: inline-grid;width: 16%;" >
+									<p class="ptxt">暴击</p>
+									<p class="ptxt" id="Dayboss_crit">毛球暴击</p>
+									<p class="ptxt" id="Dayboss_crit">boss暴击</p>
+								</div>
+								<div style="background-color: white; width: 100%; text-align: center; border: #adeeaf 2px solid;border-radius: 25%">
+									<HR  id="Dboss_health" SIZE=2 COLOR="#adeeaf" style="text-align: left; margin: 0; width: 100%">
+								</div>
+
+							</div>
+						</div>
+
+@ -3621,70 +4137,6 @@
+						</div>
+					</form>
+
+					<form action="" id="Equipbox" style="display: none">
+						<div class="button1" id="Equip_display" style=" border: 3px solid; text-align: center">
+							<p class="ptxt" style="display: inline-grid;width: 18%;font-size: x-small">当前护卫:</p>
+							<p class="ptxt" id="Equip_att" style="display: inline-grid;width: 19%;font-size: x-small"> 攻击：0 </p>
+							<p class="ptxt" id="Equip_def" style="display: inline-grid;width: 19%;font-size: x-small"> 防御：0 </p>
+							<p class="ptxt" id="Equip_speed" style="display: inline-grid;width: 19%;font-size: x-small"> 速度：0 </p>
+							<p class="ptxt" id="Equip_crit" style="display: inline-grid;width: 16%;font-size: x-small"> 暴击：0 </p>
+						</div>
+						<div id="equip_list" style="display: inline-flex">
+							<div style="margin-right:2em; ">
+								<div style="display: inline-grid;position: static">
+									<button class="button_equip_fax" type="button" id="Equip1_fax" style="display:inline-block;  text-align: justify">
+											<p class="ptxt" id="Equip1_name_fax" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+									</button>
+									<button class="button_equip_fail" type="button" id="Equip1" style="display:inline-block;  text-align: justify"
+								 	onmouseover="show_equipment1()"
+								 	onmouseout="equipment_fresh()"
+								 	onclick="Choose_equipment_button()">
+										<p class="ptxt" id="Equip1_name" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip1_att" style="display: none;width: 20%;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip1_def" style="display: none;width: 20%;font-size: x-small"> 防御：0 </p>
+										<p class="ptxt" id="Equip1_speed" style="display: none;width: 20%;font-size: x-small"> 速度：0 </p>
+										<p class="ptxt" id="Equip1_crit" style="display: none;width: 20%;font-size: x-small"> 暴击：0 </p>
+									</button>
+								</div>
+							</div>
+
+							<div style="margin-right:2em; ">
+								<div style=" display: inline-grid; position:static">
+
+									<button class="button_equip_fax" type="button" id="Equip2_fax" style="display:inline-block;  text-align: justify">
+										<p class="ptxt" id="Equip2_name_fax" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+									</button>
+
+									<button class="button_equip_fail" type="button" id="Equip2" style="display:inline-block;  text-align: justify"
+							 		onmouseover="show_equipment2()"
+							 		onmouseout="equipment_fresh()"
+							 		onclick="Choose_equipment_button()">
+										<p class="ptxt" id="Equip2_name" style="display: inline-grid;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip2_att" style="display: none;width: 20%;font-size: x-small"> 攻击：0 </p>
+										<p class="ptxt" id="Equip2_def" style="display: none;width: 20%;font-size: x-small"> 防御：0 </p>
+										<p class="ptxt" id="Equip2_speed" style="display: none;width: 20%;font-size: x-small"> 速度：0 </p>
+										<p class="ptxt" id="Equip2_crit" style="display: none;width: 20%;font-size: x-small"> 暴击：0 </p>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div style=" display:inline-table;  text-align: justify">
+							<button class="button_fail" type="button" id="equipment_button"  style="display: none" value="建造护卫" onclick="get_equipment()">
+								建造护卫
+							</button>
+
+							<button class="button1" type="button" id="equipment_up_button"  style="display: none" onclick="Equipment_up_button()">
+								升级护卫
+							</button>
+
+						</div>
+
+
+
+					</form>
+
+
+
+					<div style="padding-top: 0px; padding-bottom: 0px; font-size: x-small; border-top: #66ccff dotted; border-bottom: #66ccff dotted;">
+
+@ -3751,9 +4203,9 @@
+
+						<div id="Daybosstxt" style=" display:inline-block; width: 100%; ">
+							<form action="" id="Daybosskillnum" style="width:40%;display: none">
+								<p style="margin-bottom: 0em">完成的每日冒险次数</p>
+								<p style="margin-bottom: 0em">完成赏金次数</p>
+								<p id="Daybosstotal">
+									完成的每日冒险次数
+									完成赏金次数
+								</p>
+							</form>
+
+@ -3844,6 +4296,21 @@
+									dis
+								</p>
+							</div>
+							<div id="Lvling" style="display:inline-block; visibility: hidden">
+								<p class="collect_txt">
+									律灵
+								</p>
+							</div>
+							<div id="Xinghuan" style="display:inline-block; visibility: hidden">
+								<p class="collect_txt">
+									星幻
+								</p>
+							</div>
+							<div id="Lingyu" style="display:inline-block; visibility: hidden">
+								<p class="collect_txt">
+									泠鱼
+								</p>
+							</div>
+
+							<div id="Xiaoxiao" style="display:inline-block; visibility: hidden">
+								<p class="collect_txt">
+@ -3884,12 +4351,13 @@
+								content:"··>收集岚星晶矿等资源用以建造飞船以及对各项功能进行升级\n"+
+										"\n"+
+										"·>点击挖矿可以更高效率获得岚星晶矿，但是会一定几率触发战斗。\n" +
+										"每天可以在大冒险中挑战一个超级boss，能够获得大量奖励。\n"+
+										"\n"+
+										"·>在各种工作过程中，你还会偶遇一些伙伴和事件。一起来收集伙伴吧！\n" +
+										"\n"+
+										"·>飞船建造到一定等级后，在部分伙伴收集完全后，可以选择起飞出发结束游戏\n" +
+										"\n"+
+										"升级按键可以按住ctrl可以进行十连点"+
+										"·>护卫的等级为白色<绿色<紫色<金色；最多强化+15\n" +
+										"·>每小时可以挑战一次赏金任务，获得大量奖励\n" +
+										"·>飞向深空后，每50级可以获得1点超动子，能够提升资源获取速度\n" +
+										"·>游戏包含自动保存功能，同时可以使用导出存档来保存存档"})
+						}
+					</script>
+@ -3904,6 +4372,8 @@
+			<p id="No.version" style="font-size: x-small"> 0.6.4 </p>
+			<p id="updata" style="font-size: x-small">update_note</p>
+			<script>
+				var Version_number="版本号 v1.0"
+				var update_note="更新说明：增加了转生系统，通过”飞向深空“按键进行转生，每50级获得1个超动子，超动子可以提升初始的升级点、采集速度等;对升级按键增加了按住ctrl键进行十连击的功能" ;
+				document.getElementById("No.version").innerHTML = Version_number;
+				document.getElementById("updata").innerHTML=update_note;
+			</script>
